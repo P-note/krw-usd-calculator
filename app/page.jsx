@@ -5,50 +5,56 @@ import { useEffect, useState} from 'react';
 
 export default function Home() {
 
+  const currency = 1300;
+
   const [USDval, setUSD] = useState(0);
   const [KRWval, setKRW] = useState(0);
 
-  useEffect(()=>{
-    const exchangeUSD = ()=>{
-        setUSD(KRWval/1000);
-    }
+  // useEffect(() => {
+  //   setKRW(USDval * currency);
+  // }, [USDval]);
 
-    exchangeUSD();
-  }, [KRWval])
-
-  useEffect(()=>{
-    const exchangeKRW = ()=>{
-        setKRW(USDval * 1000);
-    }
-
-    exchangeKRW();
-  }, [USDval])  
+  // useEffect(() => {
+  //   setUSD(KRWval / currency);
+  // }, [KRWval]);
 
   const handleChange = (e) => {
-    const name = e.target.placeholder;
+    const name = e.target.id;
     const value = e.target.value;
-    // console.log(name, value);
-    if(name === "input usd here"){
-      // setKRW(value * 1000);
+    
+    if(name === "USD"){
       setUSD(value);
+      setKRW(value * currency);
     }else{
-      // setUSD(value / 1000);
       setKRW(value);
+      setUSD(value/currency);
     }
-    console.log(USDval, KRWval)
+    // console.log(USDval, KRWval)
+  }
+
+  const handleClick = (e) => {
+    e.target.value = ""
+    if(e.target.id == "USD"){
+      setUSD(0);    
+    }
+    else{
+      setKRW(0);
+    }
   }
 
   return (
-    <section className="w-full flex-center flex-row justify-center">
+    <section className="w-full flex-center flex-row align-middle">
       <Card 
         name="USD"
         exchange = {USDval}
         handleChange = {handleChange}
+        handleClick = {handleClick}
       />
       <Card 
         name="KRW"
         exchange = {KRWval}
         handleChange = {handleChange}
+        handleClick = {handleClick}
       />
     </section>
   );
